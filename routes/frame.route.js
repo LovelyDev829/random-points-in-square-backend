@@ -24,7 +24,7 @@ router.route('/create-frame').post((req, res, next) => {
             var today = new Date()
             var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
             var time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-            const commentDateTime = date + time;
+            const commentDateTime = date + ' / ' + time;
             frameSchema.create({...req.body, commentDateTime:commentDateTime }, (error, data) => {
                 if (error) {
                     res.json({ success: false })
