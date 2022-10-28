@@ -17,7 +17,11 @@ router.route('/create-user').post((req, res, next) => {
       console.log("Already exist the user")
       res.json({ success: false })
     } else {
-      userSchema.create(req.body, (error, data) => {
+      var today = new Date()
+      var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+      var time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+      const registeredDateTime = date+time;
+      userSchema.create({...req.body, registeredDateTime: registeredDateTime}, (error, data) => {
         if (error) {
           res.json({ success: false })
         } else {

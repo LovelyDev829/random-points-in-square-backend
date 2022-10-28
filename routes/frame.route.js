@@ -21,7 +21,11 @@ router.route('/create-frame').post((req, res, next) => {
             console.log("Already existing pattern")
             res.json({ success: false })
         } else {
-            frameSchema.create(req.body, (error, data) => {
+            var today = new Date()
+            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+            var time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+            const commentDateTime = date + time;
+            frameSchema.create({...req.body, commentDateTime:commentDateTime }, (error, data) => {
                 if (error) {
                     res.json({ success: false })
                 } else {

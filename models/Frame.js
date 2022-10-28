@@ -9,7 +9,7 @@ let frameSchema = new Schema({
   comment: {
     type: String
   },
-  time: {
+  commentDateTime: {
     type: String
   },
   userId:{

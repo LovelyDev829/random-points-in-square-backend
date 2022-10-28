@@ -8,7 +8,7 @@ let userSchema = new Schema({
   lastName: {
     type: String
   },
-  uesrName: {
+  userName: {
     type: String
   },
   email: {
@@ -17,7 +17,7 @@ let userSchema = new Schema({
   password: {
     type: String
   },
-  registeredDate: {
+  registeredDateTime: {
     type: String
   },
 }, {
