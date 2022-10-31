@@ -20,7 +20,7 @@ let frameSchema = new Schema({
     type: String
   },
   frameFps:{
-    type: Number
+    type: String
   },
   shutterFps:{
     type: Number
