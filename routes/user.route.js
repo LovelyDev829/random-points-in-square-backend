@@ -1,3 +1,5 @@
+const CryptoJS = require("crypto-js");
+const CRYPT_KEY = 'LovelyDev892_key_001'
 let mongoose = require('mongoose'),
   express = require('express'),
   router = express.Router()
@@ -7,8 +9,11 @@ let userSchema = require('../models/User.js')
 
 // CREATE
 router.route('/create-user').post((req, res, next) => {
-  const { email, userName } = req.body
-  console.log("create-user", req.body)
+  console.log("sdfsd", req.body.data)
+  var decryptedData = JSON.parse(CryptoJS.AES.decrypt(req.body.data, CRYPT_KEY).toString(CryptoJS.enc.Utf8));
+  console.log("temp--->", req.body.data, decryptedData)
+  const { email, userName, password } = decryptedData
+  console.log("create-user", decryptedData)
   userSchema.find({ email: email }, (error, data) => {
     if (error) {
       res.json({ success: false, message: "There was an error..." })
@@ -29,7 +34,7 @@ router.route('/create-user').post((req, res, next) => {
           var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
           var time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
           const registeredDateTime = date + ' / ' + time;
-          userSchema.create({ ...req.body, registeredDateTime: registeredDateTime }, (error, data) => {
+          userSchema.create({ ...decryptedData, registeredDateTime: registeredDateTime }, (error, data) => {
             if (error) {
               res.json({ success: false })
             } else {
@@ -44,13 +49,21 @@ router.route('/create-user').post((req, res, next) => {
 })
 
 router.route('/check-user').post((req, res) => {
-  const { email, password } = req.body;
-  console.log("check-user", req.body)
-  userSchema.find({ email: email, password: password }, (error, data) => {
+  console.log("check-user", req.body.data)
+  var decryptedData = JSON.parse(CryptoJS.AES.decrypt(req.body.data, CRYPT_KEY).toString(CryptoJS.enc.Utf8));
+  const { email, password } = decryptedData;
+  console.log("decryptedData", decryptedData)
+  userSchema.findOne({ email: email }, (error, data) => {
     if (error) {
       return next(error)
     } else {
-      res.json(data)
+      var decryptedPass = JSON.parse(CryptoJS.AES.decrypt(data.password, CRYPT_KEY).toString(CryptoJS.enc.Utf8));
+      console.log("decryptedPass", decryptedPass)
+      console.log("data", data)
+      if(decryptedPass === password){
+        res.json(data)
+      }
+      else return next(error)
     }
   })
 })
