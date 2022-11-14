@@ -48,7 +48,7 @@ router.route('/create-user').post((req, res, next) => {
   })
 })
 
-router.route('/check-user').post((req, res) => {
+router.route('/check-user').post((req, res, next) => {
   console.log("check-user", req.body.data)
   var decryptedData = JSON.parse(CryptoJS.AES.decrypt(req.body.data, CRYPT_KEY).toString(CryptoJS.enc.Utf8));
   const { email, password } = decryptedData;
@@ -58,12 +58,11 @@ router.route('/check-user').post((req, res) => {
       return next(error)
     } else {
       var decryptedPass = JSON.parse(CryptoJS.AES.decrypt(data.password, CRYPT_KEY).toString(CryptoJS.enc.Utf8));
-      console.log("decryptedPass", decryptedPass)
-      console.log("data", data)
       if(decryptedPass === password){
+        console.log("res-data", data)
         res.json(data)
       }
-      else return next(error)
+      else return next({success: false})
     }
   })
 })
