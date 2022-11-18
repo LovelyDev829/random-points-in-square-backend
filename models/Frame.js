@@ -27,6 +27,9 @@ let frameSchema = new Schema({
   },
   frequency: {
     type: String
+  },
+  imageUrl: {
+    type: String
   }
 }, {
   collection: 'frames'
